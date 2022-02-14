@@ -28,20 +28,15 @@ class Perceptron:
         result = self.weights[i][1] + np.sum(np.dot((n * (y[j] - y_hat)), x[i]))
         self.weights[i][1] += result
 
-  def fit(self, x, y, n, epochs=1):
-    loop = True
-    while loop == True:
+  def fit(self, x, y, n, epochs):
+    for i in range(epochs):
       u = np.dot(np.transpose(self.weights), x)
       y_hat = np.heaviside(u, 0.5)
-      print(y_hat)
 
       error = self.rmse(y, y_hat)
 
       if error >= 0.5:
         self.update(x, y, y_hat, n, error)
-        u = np.dot(np.transpose(self.weights), x)
-      else:
-        loop = False
 
     return self.weights
 
@@ -54,7 +49,7 @@ class Perceptron:
       return 'Iris-versicolor'
 
 perceptron = Perceptron(weights)
-fitted = perceptron.fit(x, y, 0.1)
+fitted = perceptron.fit(x, y, 0.1, 100)
 pred = perceptron.predict([[2, 0.5]]) # should return Iris-setosa
 pred2 = perceptron.predict([[4, 0.5]]) # should return Iris-versicolor
 
